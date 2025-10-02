@@ -1,10 +1,35 @@
-import { useState } from 'react'
+import { useCallback, useEffect, useState , useRef} from 'react'
 
 function App() {
   const [length, setLength] = useState(8);
   const [numberAllowed, setNumberAllowed] = useState(false);
   const [charAllowed, setCharAllowed] = useState(false);
   const [password, setPassword] = useState(' ');
+  const passwordRef = useRef(null);
+
+  const generatePassword = useCallback(() =>{
+    let pass = "";
+    let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    if(numberAllowed) str +="0123456789";
+    if(charAllowed) str += "!@#$%^&*()-+";
+
+    for(let i = 1 ; i < length; i++){
+      const char = Math.floor(Math.random()*str.length + 1);
+      pass += str.charAt(char);
+    }
+    setPassword(pass);
+  }, [length,numberAllowed,charAllowed])
+
+  const copyToClipboard = ()=>{
+   window.navigator.clipboard.writeText(password);
+   passwordRef.current?.select();
+  }
+  
+
+  useEffect(()=>{
+    generatePassword()
+  }, [length,numberAllowed,charAllowed] )
 
  return (
   <div className="flex justify-center items-center min-h-screen bg-gray-900">
@@ -21,8 +46,10 @@ function App() {
           value={password}
           placeholder="password"
           className="w-full px-3 py-2 text-white bg-transparent outline-none"
+          ref={passwordRef}
         />
-        <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2">
+        <button className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2" 
+        onClick={copyToClipboard}>
           Copy
         </button>
       </div>
