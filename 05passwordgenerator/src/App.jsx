@@ -73,7 +73,7 @@ function App() {
         <input
           type="checkbox"
           checked={numberAllowed}
-          onChange={() => setNumberAllowed(!numberAllowed)}
+          onChange={() => setNumberAllowed((prev)=>!prev)}
           className="w-4 h-4 accent-indigo-600"
         />
         <label className="text-gray-300">Include Numbers</label>
@@ -84,7 +84,7 @@ function App() {
         <input
           type="checkbox"
           checked={charAllowed}
-          onChange={() => setCharAllowed(!charAllowed)}
+          onChange={() => setCharAllowed(prev => !prev)}
           className="w-4 h-4 accent-indigo-600"
         />
         <label className="text-gray-300">Include Symbols</label>
